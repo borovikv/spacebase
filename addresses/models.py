@@ -22,8 +22,8 @@ class UserAddress(models.Model):
         self.full_address = f"{streetdata}\n{self.zipcode} {self.city} {self.state} {self.country}"
         super().save(*args, **kwargs)
 
-    def __repr__(self):
-        return self.full_address
+    def __str__(self):
+        return self.name
 
     @staticmethod
     def find(user, **kwargs):
@@ -33,8 +33,6 @@ class UserAddress(models.Model):
 
     @staticmethod
     def build_query(field_name, value):
-        if not value:
-            return Q()
         result = Q(**{field_name: value})
         if UserAddress._meta.get_field(field_name).null:
             result |= Q(**{f'{field_name}__isnull': True})
